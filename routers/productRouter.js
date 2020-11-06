@@ -2,10 +2,18 @@ const { Router } = require("express");
 const router = new Router();
 const { product: Product } = require("../models");
 
-// get all products
+// get all products with pagination option
 router.get("/", async (req, res, next) => {
   try {
-    const products = await Product.findAll();
+    const limit = req.query.limit ? Number(req.query.limit) : 50;
+    const offset = req.query.offset ? Number(req.query.offset) : 0;
+
+    if (isNaN(limit) || isNaN(offset)) {
+      return res.status(400).json("limit and offset must be a number");
+    }
+
+    const products = await Product.findAll({ limit, offset });
+
     res.json(products);
   } catch (e) {
     next(e);
