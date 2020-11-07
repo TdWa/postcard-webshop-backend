@@ -39,7 +39,7 @@ router.get("/:userId", checkIfUserExists, async (req, res, next) => {
   }
 });
 
-// add an item to order with orderId..
+// add an item to order with orderId
 router.post("/:orderId", async (req, res, next) => {
   try {
     const orderId = Number(req.params.orderId);

@@ -1,4 +1,5 @@
 const { Router } = require("express");
+const bcrypt = require("bcrypt");
 const router = new Router();
 const { user: User, order: Order } = require("../models");
 
@@ -32,11 +33,16 @@ router.get("/:userId", async (req, res, next) => {
 // add a user with an empty order
 router.post("/", async (req, res, next) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, isAdmin } = req.body;
     if (!name || !email || !password) {
       return res.status(400).json("missing name/email/password");
     }
-    const user = await User.create(req.body);
+    const user = await User.create({
+      name,
+      email,
+      password: bcrypt.hashSync(password, 10),
+      isAdmin,
+    });
     const order = await Order.create({ userId: user.dataValues.id });
 
     res.json({ user, order });
@@ -49,7 +55,7 @@ router.post("/", async (req, res, next) => {
   }
 });
 
-// update a user
+// update a user with userId
 router.put("/:userId", async (req, res, next) => {
   try {
     const userId = Number(req.params.userId);
