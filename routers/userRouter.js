@@ -6,7 +6,9 @@ const { user: User, order: Order } = require("../models");
 // get all users
 router.get("/", async (req, res, next) => {
   try {
-    const users = await User.findAll();
+    const users = await User.findAll({
+      include: [Order],
+    });
     // users.map((u) => console.log(u.get({ plain: true })));
     res.json(users);
   } catch (e) {

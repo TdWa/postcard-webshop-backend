@@ -1,6 +1,10 @@
 const { Router } = require("express");
 const router = new Router();
-const { product: Product } = require("../models");
+const {
+  product: Product,
+  productCategory: ProductCategory,
+  category: Category,
+} = require("../models");
 
 // get all products with pagination option
 router.get("/", async (req, res, next) => {

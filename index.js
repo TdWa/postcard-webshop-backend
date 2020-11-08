@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const app = express();
 const PORT = 4000;
 app.set("json spaces", 2);
@@ -9,6 +10,7 @@ const orderRouter = require("./routers/orderRouter");
 const loginRouter = require("./routers/loginRouter");
 const authMiddleware = require("./auth/middleware");
 
+app.use(cors());
 app.use(express.json());
 app.use("/login", loginRouter);
 app.use("/orders", authMiddleware, orderRouter);
