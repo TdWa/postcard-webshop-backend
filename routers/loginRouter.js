@@ -4,6 +4,14 @@ const bcrypt = require("bcrypt");
 const { toJWT } = require("../auth/jwt");
 const { user: User } = require("../models");
 
+router.get("/", async (req, res, next) => {
+  try {
+    res.json("does this work?");
+  } catch (e) {
+    next(e);
+  }
+});
+
 router.post("/", async (req, res, next) => {
   try {
     const { email, password } = req.body;

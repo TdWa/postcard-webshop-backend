@@ -1,4 +1,5 @@
 const User = require("../models").user;
+const Order = require("../models").order;
 const { toData } = require("./jwt");
 
 async function authMiddleWare(req, res, next) {
@@ -12,7 +13,9 @@ async function authMiddleWare(req, res, next) {
       return res.status(400).json("Invalid JWT token");
     }
     try {
-      const user = await User.findByPk(data.userId);
+      const user = await User.findByPk(data.userId, {
+        include: [Order],
+      });
       if (!user) {
         return res.status(404).json("no user found");
       }
