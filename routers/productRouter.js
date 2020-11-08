@@ -6,16 +6,6 @@ const {
   category: Category,
 } = require("../models");
 
-/*
-User.findAll({
-  where: { user_id: '123' },
-  include: {
-    model: Bars,
-    through: { attributes: [] } // this will remove the rows from the join table (i.e. 'UserPubCrawl table') in the result set
-  }
-});
-*/
-
 // get all products with pagination option
 router.get("/", async (req, res, next) => {
   try {
