@@ -6,6 +6,16 @@ const {
   category: Category,
 } = require("../models");
 
+/*
+User.findAll({
+  where: { user_id: '123' },
+  include: {
+    model: Bars,
+    through: { attributes: [] } // this will remove the rows from the join table (i.e. 'UserPubCrawl table') in the result set
+  }
+});
+*/
+
 // get all products with pagination option
 router.get("/", async (req, res, next) => {
   try {
@@ -16,7 +26,16 @@ router.get("/", async (req, res, next) => {
       return res.status(400).json("limit and offset must be a number");
     }
 
-    const products = await Product.findAndCountAll({ limit, offset });
+    const products = await Product.findAndCountAll({
+      include: [
+        {
+          model: Category,
+          attributes: ["name"],
+        },
+      ],
+      limit,
+      offset,
+    });
 
     res.json(products);
   } catch (e) {
@@ -28,7 +47,14 @@ router.get("/", async (req, res, next) => {
 router.get("/:productId", async (req, res, next) => {
   try {
     const { productId } = req.params;
-    const product = await Product.findByPk(productId);
+    const product = await Product.findByPk(productId, {
+      include: [
+        {
+          model: Category,
+          attributes: ["name"],
+        },
+      ],
+    });
     if (!product) {
       return res.status(404).json("product not found");
     }
