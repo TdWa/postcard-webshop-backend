@@ -16,7 +16,7 @@ router.get("/", async (req, res, next) => {
       return res.status(400).json("limit and offset must be a number");
     }
 
-    const products = await Product.findAll({ limit, offset });
+    const products = await Product.findAndCountAll({ limit, offset });
 
     res.json(products);
   } catch (e) {
